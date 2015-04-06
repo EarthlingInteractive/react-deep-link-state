@@ -1,0 +1,31 @@
+{
+  "name": "react-deep-link-state",
+  "version": "0.0.1",
+  "description": "A React mixin for linking form fields to a deep structure of data within the component's state.",
+  "main": "DeepLinkStateMixin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EarthlingInteractive/react-deep-link-state.git"
+  },
+  "keywords": [
+    "react",
+    "mixin",
+    "deep",
+    "link",
+    "state",
+    "form"
+  ],
+  "author": "David Jolly",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EarthlingInteractive/react-deep-link-state/issues"
+  },
+  "homepage": "https://github.com/EarthlingInteractive/react-deep-link-state",
+  "dependencies": {
+    "lodash": "^3.6.0",
+    "react": "^0.13.1"
+  }
+}
