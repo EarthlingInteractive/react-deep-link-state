@@ -1,8 +1,8 @@
 {
   "name": "react-deep-link-state",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A React mixin for linking form fields to a deep structure of data within the component's state.",
-  "main": "DeepLinkStateMixin.js",
+  "main": "DeepLinkedStateMixin.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
