@@ -35,10 +35,10 @@ var DeepLinkedStateLib = {
         return value;
     },
 
-    onChange: function(statePath, options, value) {
+    onChange: function(statePath, options, callback, value) {
         var partialState = DeepLinkedStateLib.updateValueObject(statePath, options, value, this.state);
         
-        this.setState(partialState);
+        this.setState(partialState, callback);
     },
 
     updateValueObject: function(statePath, options, value, valueObject) {
