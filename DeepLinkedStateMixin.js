@@ -6,8 +6,14 @@ var DeepLinkedStateLib = require('./DeepLinkedStateLib');
 
 var DeepLinkedStateMixin = {
     deepLinkState: function(statePath, options, callback) {
+        
+        if (typeof options == "function") {
+            callback = options;
+            options = false;
+        }
+        
         return new ReactLink(
-            DeepLinkedStateLib.getValueFromState.call(this, statePath, options, callback),
+            DeepLinkedStateLib.getValueFromState.call(this, statePath, options),
             DeepLinkedStateLib.onChange.bind(this, statePath, options, callback)
         );
     }
