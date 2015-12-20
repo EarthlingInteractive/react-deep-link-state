@@ -5,7 +5,7 @@ var ReactLink = require('react/lib/ReactLink');
 var DeepLinkedStateLib = require('./DeepLinkedStateLib');
 
 var DeepLinkedStateMixin = {
-    deepLinkState: function(statePath, options, callback) {
+    linkState: function(statePath, options, callback) {
         
         if (typeof statePath == "string") {
             statePath = statePath.split(/[\.\[\]]/g);
