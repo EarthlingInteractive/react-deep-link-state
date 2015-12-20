@@ -11,7 +11,9 @@ var DeepLinkedStateMixin = {
             statePath = statePath.split(/[\.\[\]]/g);
         }
         
-        if (typeof options == "function") {
+        var options_type = typeof options;
+        
+        if (options_type == "function" || options_type == "string") {
             callback = options;
             options = false;
         }
