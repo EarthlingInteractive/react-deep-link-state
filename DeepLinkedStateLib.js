@@ -37,10 +37,19 @@ var DeepLinkedStateLib = {
 
     onChange: function(statePath, options, callback, value) {
         
-        var partialState = DeepLinkedStateLib.updateValueObject(statePath, options, value, this.state);
+        var config = this.constructor.deepLinkeStateConfig, 
+            partialState = DeepLinkedStateLib.updateValueObject(statePath, options, value, this.state);
         
+        if (typeof config != "undefined" && config.silent) {
+
+            this.state = _.defaultsDeep(partialState, this.state);
+            callback(value, isDefaults);
+
+            return;
+        }
+
         this.setState(partialState, function() {
-            callback(value);
+            callback(value, isDefaults);
         });
     },
 
