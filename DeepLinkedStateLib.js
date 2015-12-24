@@ -44,7 +44,7 @@ var DeepLinkedStateLib = {
 
         if (typeof config != "undefined" && config.silent) {
 
-            this.state = _.defaultsDeep(partialState, this.state);
+            this.state = partialState;
             
             if (callbackIsSetted) {
                 callback(value, isDefaults);
