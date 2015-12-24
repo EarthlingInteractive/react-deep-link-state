@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var update = require('react-addons-update');
 
 var DeepLinkedStateLib = {
     getValueFromState: function(statePath, options) {
@@ -63,27 +64,27 @@ var DeepLinkedStateLib = {
     updateValueObject: function(statePath, options, value, valueObject) {
         options = options || {};
         
-        var statePathDepth = [].concat(statePath);
-        var statePathLast = statePathDepth.pop();
-        
-        var partialState = _.pick(valueObject, statePathDepth[0]);
-        var stateSub = partialState;
-        
-        _.each(statePathDepth, function(statePathPart) {
-            stateSub[statePathPart] = _.extend({}, stateSub[statePathPart]);
-            
-            stateSub = stateSub[statePathPart];
-        });
-        
         if (options.storeEmptyStringAsNull) {
+
             if (value === '') {
                 value = null;
             }
         }
+
+        var updaterObject = {},
+            updaterLastOp = updaterObject,
+            statePathLastIndex = statePath.length - 1;
+
+        statePath.forEach((part, i) => {
+
+            updaterLastOp = updaterLastOp[part] = {};
+
+            if (i == statePathLastIndex) {
+                updaterLastOp.$set = value;
+            }
+        });
         
-        stateSub[statePathLast] = value;
-        
-        return partialState;
+        return update(valueObject, updaterObject);
     }
 };
 
