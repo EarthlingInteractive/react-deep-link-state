@@ -75,7 +75,7 @@ var DeepLinkedStateLib = {
             updaterLastOp = updaterObject,
             statePathLastIndex = statePath.length - 1;
 
-        statePath.forEach((part, i) => {
+        statePath.forEach(function(part, i) {
 
             updaterLastOp = updaterLastOp[part] = {};
 
