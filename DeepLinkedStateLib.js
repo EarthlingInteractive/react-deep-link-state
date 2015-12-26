@@ -42,8 +42,13 @@ var DeepLinkedStateLib = {
             partialState = DeepLinkedStateLib.updateValueObject(statePath, options, value, this.state),
             callbackIsSetted = typeof callback == "function";
 
-        if (typeof config != "undefined" && config.silent) {
+        config = _.defaults(config, {
+            silent: false,
+            silentDefaults: true
+        });
 
+        if (config.silent || config.silentDefaults && isDefaults) {
+            
             this.state = partialState;
             
             if (callbackIsSetted) {
