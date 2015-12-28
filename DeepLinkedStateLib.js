@@ -9,7 +9,12 @@ var DeepLinkedStateLib = {
     },
     
     getValueFromObject: function(statePath, options, valueObject) {
-        options = options || {};
+
+        var config = this.constructor.deepLinkeStateConfig;
+
+        options = _.defaults(options, config, {
+            silent: false
+        });
         
         var value = valueObject;
         
@@ -36,23 +41,22 @@ var DeepLinkedStateLib = {
         return value;
     },
 
-    onChange: function(isDefaults, statePath, options, callback, value) {
+    onChange: function(statePath, options, callback, value) {
 
         var config = this.constructor.deepLinkeStateConfig, 
             partialState = DeepLinkedStateLib.updateValueObject(statePath, options, value, this.state),
             callbackIsSetted = typeof callback == "function";
 
-        config = _.defaults(config, {
-            silent: false,
-            silentDefaults: true
+        options = _.defaults(options, config, {
+            silent: false
         });
 
-        if (config.silent || config.silentDefaults && isDefaults) {
+        if (options.silent) {
             
             this.state = partialState;
             
             if (callbackIsSetted) {
-                callback(value, isDefaults);
+                callback(value);
             }
 
             return;
@@ -61,13 +65,18 @@ var DeepLinkedStateLib = {
         this.setState(partialState, function() {
             
             if (callbackIsSetted) {
-                callback(value, isDefaults);
+                callback(value);
             }
         });
     },
 
     updateValueObject: function(statePath, options, value, valueObject) {
-        options = options || {};
+
+        var config = this.constructor.deepLinkeStateConfig;
+
+        options = _.defaults(options, config, {
+            silent: false
+        });
         
         if (options.storeEmptyStringAsNull) {
 
