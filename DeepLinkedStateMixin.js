@@ -18,10 +18,8 @@ var DeepLinkedStateMixin = {
         
         var link = new ReactLink(
             DeepLinkedStateLib.getValueFromState.call(this, statePath, options),
-            DeepLinkedStateLib.onChange.bind(this, false, statePath, options, callback)
+            DeepLinkedStateLib.onChange.bind(this, statePath, options, callback)
         );
-
-        link.requestDefaults = DeepLinkedStateLib.onChange.bind(this, true, statePath, options, callback);
 
         return link;
     }
