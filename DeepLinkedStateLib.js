@@ -12,7 +12,7 @@ var DeepLinkedStateLib = {
 
         var config = this.constructor.deepLinkeStateConfig;
 
-        options = _.defaults(options, config, {
+        options = _.defaults({}, options, config, {
             silent: false
         });
         
@@ -47,7 +47,7 @@ var DeepLinkedStateLib = {
             partialState = DeepLinkedStateLib.updateValueObject(statePath, options, value, this.state),
             callbackIsSetted = typeof callback == "function";
 
-        options = _.defaults(options, config, {
+        options = _.defaults({}, options, config, {
             silent: false
         });
 
@@ -74,7 +74,7 @@ var DeepLinkedStateLib = {
 
         var config = this.constructor.deepLinkeStateConfig;
 
-        options = _.defaults(options, config, {
+        options = _.defaults({}, options, config, {
             silent: false
         });
         
