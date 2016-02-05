@@ -1,35 +1,48 @@
 {
-  "name": "react-deep-link-state",
-  "version": "0.0.2",
+  "name": "react-deep-link",
+  "version": "0.1.0",
   "description": "A React mixin for linking form fields to a deep structure of data within the component's state.",
-  "main": "DeepLinkedStateMixin.js",
+  "main": "lib/mixin.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "babel ./src -d ./lib",
+    "prepublish": "npm run compile"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/EarthlingInteractive/react-deep-link-state.git"
+    "url": "https://github.com/TrigenSoftware/react-deep-link.git"
   },
   "keywords": [
     "react",
-    "mixin",
-    "deep",
     "link",
     "state",
+    "linkstate",
+    "flux",
     "form"
   ],
-  "author": "David Jolly",
+  "author": "dangreen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/EarthlingInteractive/react-deep-link-state/issues"
+    "url": "https://github.com/TrigenSoftware/react-deep-link/issues"
   },
-  "homepage": "https://github.com/EarthlingInteractive/react-deep-link-state",
+  "homepage": "https://github.com/TrigenSoftware/react-deep-link",
   "dependencies": {
     "lodash": "^3.6.0",
     "react-addons-update": "^0.14.3",
-    "react": "^0.13.1"
+    "react": "^0.14.3"
   },
   "devDependencies": {
-    "mocha": "^2.2.4"
+    "babel-cli": "^6.4.5",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "babel-plugin-add-module-exports": "^0.1.2"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0"
+    ],
+    "plugins": [
+      "add-module-exports"
+    ]
   }
 }
