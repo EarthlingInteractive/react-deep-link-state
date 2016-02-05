@@ -2,7 +2,7 @@ import _      from 'lodash';
 import update from 'react-addons-update';
 
 export function getValueFromState(statePath, options) {
-    return getValueFromObject(statePath, options, this.state);
+    return getValueFromObject.call(this, statePath, options, this.state);
 }
     
 export function getValueFromObject(statePath, options, valueObject) {
@@ -42,7 +42,7 @@ export function getValueFromObject(statePath, options, valueObject) {
 
 export function onChange(statePath, options, callback, value) {
 
-    var partialState     = updateValueObject(statePath, options, this.state, value),
+    var partialState     = updateValueObject.call(this, statePath, options, this.state, value),
         callbackIsSetted = typeof callback == "function";
 
     this.setState(partialState, () => {
