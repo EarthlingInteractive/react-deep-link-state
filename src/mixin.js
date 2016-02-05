@@ -3,7 +3,7 @@ import ReactLink from 'react/lib/ReactLink';
 
 export default {
 
-    linkProp(statePath, options, callback) {
+    linkState(statePath, options, callback) {
         
         if (typeof statePath == "string") {
             statePath = statePath.split(/[\.\[\]]/g);
