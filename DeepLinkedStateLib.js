@@ -12,7 +12,7 @@ var DeepLinkedStateLib = {
         
         var value = valueObject;
         
-        var havePath = _.all(statePath, function(statePathPart) {
+        var havePath = _.every(statePath, function(statePathPart) {
             if (!_.isObject(value) || !value.hasOwnProperty(statePathPart)) {
                 return false;
             }
