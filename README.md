@@ -27,6 +27,19 @@ var MyComponent = React.createClass({
 });
 ```
 
+or
+
+```js
+import DeepLinkDecorator from 'react-deep-link/lib/decorator';
+
+...
+
+@DeepLinkDecorator
+class MyComponent extends React.Component {
+	...
+}
+```
+
 # Usage Examples #
 
 Link a text field to ```this.state.data.user.name```:

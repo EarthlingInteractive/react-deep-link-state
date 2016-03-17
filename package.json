@@ -1,6 +1,6 @@
 {
   "name": "react-deep-link",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "A React mixin for linking form fields to a deep structure of data within the component's state.",
   "main": "lib/mixin.js",
   "scripts": {
