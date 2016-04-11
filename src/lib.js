@@ -1,19 +1,95 @@
-import _      from 'lodash';
-import update from 'react-addons-update';
+import ReactLink from 'react/lib/ReactLink';
+import _         from 'lodash';
+import update    from 'react-addons-update';
 
-export function getValueFromState(statePath, options) {
-    return getValueFromObject.call(this, statePath, options, this.state);
+export default class Link extends ReactLink {
+
+    constructor(context, _statePath, _options, _callback) {
+
+        var statePath = _statePath,
+            options   = _options,
+            callback  = _callback;
+        
+        if (typeof statePath == "string") {
+            statePath = statePath.split(/[\.\[\]]/g);
+        }
+        
+        if (typeof options == "function") {
+            callback = options;
+            options  = false;
+        }
+
+        super(
+            getValueFromState(context, statePath, options), 
+            requestChange.bind(context, statePath, options, callback)
+        );
+
+        this.onChange = onChange.bind(context, statePath, options, callback);
+    }
 }
-    
-export function getValueFromObject(statePath, options, valueObject) {
 
-    var config = this.constructor.deepLinkeConfig;
+/**
+ * Request change function for `valueLink` property.
+ * 
+ * @param  {Array}    path to property
+ * @param  {Object}   options
+ * @param  {Function} callback
+ * @param  {Object}   new value
+ */
+function requestChange(statePath, options, callback, value) {
 
-    options = _.defaults({}, options, config, {
-        storeEmptyStringAsNull: false
+    var newState         = setValueToState(this, statePath, options, value),
+        callbackIsSetted = typeof callback == "function";
+
+    this.setState(newState, () => {
+        
+        if (callbackIsSetted) {
+            callback.call(this, value);
+        }
     });
-    
-    var value = valueObject;
+}
+
+/**
+ * On change function for usage without `valueLink` property. (React v15)
+ * 
+ * @param  {Array}    path to property
+ * @param  {Object}   options
+ * @param  {Function} callback
+ * @param  {Object}   DOM onChange event object
+ */
+function onChange(statePath, options, callback, event) {
+
+    var { type, value, checked } = event.target;
+
+    if (type == "checkbox" || type == "radio") {
+        value = checked;
+    }
+
+    var newState         = setValueToState(this, statePath, options, value),
+        callbackIsSetted = typeof callback == "function";
+
+    this.setState(newState, () => {
+        
+        if (callbackIsSetted) {
+            callback.call(this, value);
+        }
+    });
+}
+
+/**
+ * Get value from state of component.
+ * 
+ * @param  {Object} react component context
+ * @param  {Array}  path to property
+ * @param  {Object} options
+ * @return {Object}
+ */
+function getValueFromState(context, statePath, _options) {
+
+    var value   = context.state,
+        options = _.defaults({}, _options, context.constructor.deepLinkeConfig, {
+            storeEmptyStringAsNull: false
+        });
     
     var havePath = _.all(statePath, (statePathPart) => {
 
@@ -40,24 +116,18 @@ export function getValueFromObject(statePath, options, valueObject) {
     return value;
 }
 
-export function onChange(statePath, options, callback, value) {
+/**
+ * Set value to state of component.
+ * 
+ * @param  {Object} react component context
+ * @param  {Array}  path to property
+ * @param  {Object} options
+ * @param  {Object} new value
+ * @return {Object}
+ */
+function setValueToState(context, statePath, _options, value) {
 
-    var partialState     = updateValueObject.call(this, statePath, options, this.state, value),
-        callbackIsSetted = typeof callback == "function";
-
-    this.setState(partialState, () => {
-        
-        if (callbackIsSetted) {
-            callback.call(this, value);
-        }
-    });
-}
-
-export function updateValueObject(statePath, options, valueObject, value) {
-
-    var config = this.constructor.deepLinkeConfig;
-
-    options = _.defaults({}, options, config, {
+    var options = _.defaults({}, _options, context.constructor.deepLinkeConfig, {
         storeEmptyStringAsNull: false
     });
     
@@ -81,5 +151,5 @@ export function updateValueObject(statePath, options, valueObject, value) {
         }
     });
     
-    return update(valueObject, updaterObject);
+    return update(context.state, updaterObject);
 }

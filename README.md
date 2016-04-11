@@ -47,6 +47,11 @@ Link a text field to ```this.state.data.user.name```:
 <input type="text" valueLink={this.linkState('data.user.name')} />
 ```
 
+In React v15 `valueLink` is deprecated "due to very low popularity", because of this there are other variant of usage:
+```jsx
+<input type="text" {...this.linkState('data.user.name')} />
+```
+
 Link a text field to ```this.state.data.user.name```, translating an empty string in the text field to null in the state and vice-versa:
 ```jsx
 <input type="text" valueLink={this.linkState('data.user.name', {storeEmptyStringAsNull: true})} />
@@ -63,6 +68,15 @@ Also you can define global configs:
 MyComponent.deepLinkConfig = {
 	storeEmptyStringAsNull: true
 };
+// or
+class MyComponent extends React.Component {
+	
+	static deepLinkConfig = {
+		storeEmptyStringAsNull: true
+	};
+
+	...
+}
 ```
 
 
