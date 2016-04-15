@@ -1,10 +1,7 @@
-import Link from './lib';
+import { linkState, valueLinkToState, checkedLinkToState } from './lib';
 
 export default function decorator(target) {
-
-    Object.defineProperty(target.prototype, 'linkState', {
-        value(statePath, options, callback) {
-            return new Link(this, statePath, options, callback);
-        }
-    });
+    Object.defineProperty(target.prototype, 'linkState',          linkState);
+    Object.defineProperty(target.prototype, 'valueLinkToState',   valueLinkToState);
+    Object.defineProperty(target.prototype, 'checkedLinkToState', checkedLinkToState);
 };

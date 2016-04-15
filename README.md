@@ -49,7 +49,8 @@ Link a text field to ```this.state.data.user.name```:
 
 In React v15 `valueLink` is deprecated "due to very low popularity", because of this there are other variant of usage:
 ```jsx
-<input type="text" {...this.linkState('data.user.name')} />
+<input type="text"     {...this.valueLinkToState('data.user.name')} />
+<input type="checkbox" {...this.checkedLinkToState('data.user.onDiet')} />
 ```
 
 Link a text field to ```this.state.data.user.name```, translating an empty string in the text field to null in the state and vice-versa:

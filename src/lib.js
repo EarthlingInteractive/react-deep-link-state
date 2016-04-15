@@ -1,31 +1,69 @@
-import ReactLink from 'react/lib/ReactLink';
-import _         from 'lodash';
-import update    from 'react-addons-update';
+import _      from 'lodash';
+import update from 'react-addons-update';
 
-export default class Link extends ReactLink {
+export function linkState(_statePath, _options, _callback) {
 
-    constructor(context, _statePath, _options, _callback) {
-
-        var statePath = _statePath,
-            options   = _options,
-            callback  = _callback;
-        
-        if (typeof statePath == "string") {
-            statePath = statePath.split(/[\.\[\]]/g);
-        }
-        
-        if (typeof options == "function") {
-            callback = options;
-            options  = false;
-        }
-
-        super(
-            getValueFromState(context, statePath, options), 
-            requestChange.bind(context, statePath, options, callback)
-        );
-
-        this.onChange = onChange.bind(context, statePath, options, callback);
+    var statePath = _statePath,
+        options   = _options,
+        callback  = _callback;
+    
+    if (typeof statePath == "string") {
+        statePath = statePath.split(/[\.\[\]]/g);
     }
+    
+    if (typeof options == "function") {
+        callback = options;
+        options  = false;
+    }
+
+    return {
+        value:         getValueFromState(  this, statePath, options),
+        requestChange: requestChange.bind( this, statePath, options, callback)
+    };
+}
+
+export function valueLinkToState(_statePath, _options, _callback) {
+
+    var statePath = _statePath,
+        options   = _options,
+        callback  = _callback;
+    
+    if (typeof statePath == "string") {
+        statePath = statePath.split(/[\.\[\]]/g);
+    }
+    
+    if (typeof options == "function") {
+        callback = options;
+        options  = false;
+    }
+
+    return {
+        value:         getValueFromState(  this, statePath, options),
+        requestChange: requestChange.bind( this, statePath, options, callback),
+        onChange:      onChange.bind(      this, statePath, options, callback)
+    };
+}
+
+export function checkedLinkToState(_statePath, _options, _callback) {
+
+    var statePath = _statePath,
+        options   = _options,
+        callback  = _callback;
+    
+    if (typeof statePath == "string") {
+        statePath = statePath.split(/[\.\[\]]/g);
+    }
+    
+    if (typeof options == "function") {
+        callback = options;
+        options  = false;
+    }
+
+    return {
+        checked:       getValueFromState(  this, statePath, options),
+        requestChange: requestChange.bind( this, statePath, options, callback),
+        onChange:      onChange.bind(      this, statePath, options, callback)
+    };
 }
 
 /**
