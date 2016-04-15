@@ -1,3 +1,3 @@
-import * as Mixin from './lib';
+import { linkState, valueLinkToState, checkedLinkToState } from './lib';
 
-export default Mixin;
+export default { linkState, valueLinkToState, checkedLinkToState };
