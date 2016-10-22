@@ -1,40 +1,88 @@
-[![NPM](https://nodei.co/npm/react-deep-link-state.png?compact=true)](https://nodei.co/npm/react-deep-link-state/)
+[![NPM](https://nodei.co/npm/react-deep-link.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-deep-link/)
 
-# react-deep-link-state
+# react-deep-link
 A React mixin for linking form fields to a deep structure of data within the component's state.
 
-# Description #
+# Description
 
-This mixin is a substitute for the standard React mixin React.addons.LinkedStateMixin.  While the standard mixin only allows you to link a form field to a key directly within the component's state, this mixin allows you to link a form field to a key deeper in the component's state object.
+This mixin is a substitute for the standard React mixin React.addons.LinkedStateMixin. While the standard mixin only allows you to link a form field to a key directly within the component's state, this mixin allows you to link a form field to a key deeper in the component's state object.
 
-# Getting Started#
+# Getting Started
 
 To install from npm, run:
 
-```npm install --save react-deep-link-state```
+`npm install --save react-deep-link`
 
 Then include the mixin in the component that will use it:
 
-```
-var DeepLinkedStateMixin = require('react-deep-link-state');
+```js
+import DeepLinkMixin from 'react-deep-link';
 
 ...
 
 var MyComponent = React.createClass({
-	mixins: [DeepLinkedStateMixin],
+	mixins: [DeepLinkMixin],
 	
 	...
 });
 ```
 
+or
+
+```js
+import DeepLinkDecorator from 'react-deep-link/lib/decorator';
+
+...
+
+@DeepLinkDecorator
+class MyComponent extends React.Component {
+	...
+}
+```
+
 # Usage Examples #
 
-Link a text field to ```this.state.data.user.name```:
-```
-<input type="text" valueLink={this.deepLinkState(['data', 'user', 'name'])} />
+Link a text field to `this.state.data.user.name`:
+```jsx
+<input type="text" valueLink={this.linkState('data.user.name')} />
 ```
 
-Link a text field to ```this.state.data.user.name```, translating an empty string in the text field to null in the state and vice-versa:
+In React v15 `valueLink` is deprecated "due to very low popularity", because of this there are other variant of usage:
+```jsx
+<input type="text"     {...this.valueLinkToState('data.user.name')} />
+<input type="checkbox" {...this.checkedLinkToState('data.user.onDiet')} />
 ```
-<input type="text" valueLink={this.deepLinkState(['data', 'user', 'name'], {storeEmptyStringAsNull: true})} />
+
+Link a text field to `this.state.data.user.name`, translating an empty string in the text field to null in the state and vice-versa:
+```jsx
+<input type="text" valueLink={this.linkState('data.user.name', {storeEmptyStringAsNull: true})} />
 ```
+
+In both cases above you can add callback:
+```jsx
+<input type="text" valueLink={this.linkState('data.user.name', (newVale) => {...})} />
+<input type="text" valueLink={this.linkState('data.user.name', {storeEmptyStringAsNull: true}, (newVale) => {...})} />
+```
+
+In options you can set `mutator` function:
+```jsx
+<input type="text" {...this.valueLinkToState('data.user.name', {mutator: _ => _.toUpperCase()})} />
+```
+
+Also you can define global configs:
+```js
+MyComponent.deepLinkConfig = {
+	storeEmptyStringAsNull: true
+};
+// or
+class MyComponent extends React.Component {
+	
+	static deepLinkConfig = {
+		storeEmptyStringAsNull: true
+	};
+
+	...
+}
+```
+
+
