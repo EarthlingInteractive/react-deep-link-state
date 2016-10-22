@@ -1,6 +1,6 @@
 {
   "name": "react-deep-link",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "A React mixin for linking form fields to a deep structure of data within the component's state.",
   "main": "lib/mixin.js",
   "scripts": {
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/TrigenSoftware/react-deep-link",
   "dependencies": {
-    "lodash": "^3.6.0",
+    "lodash": "^4.16.4",
     "react-addons-update": "^15.0.1"
   },
   "devDependencies": {

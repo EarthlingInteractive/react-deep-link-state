@@ -1,69 +1,95 @@
-import _      from 'lodash';
-import update from 'react-addons-update';
+import update   from 'react-addons-update';
+import isObject from 'lodash/isObject';
+import defaults from 'lodash/defaults';
+import every    from 'lodash/every';
 
+/**
+ * Link value to state.
+ * 
+ * @param  {String}   statePath
+ * @param  {Object}   options
+ * @param  {Function} callback
+ * @return {Object}
+ */
 export function linkState(_statePath, _options, _callback) {
 
-    var statePath = _statePath,
-        options   = _options,
-        callback  = _callback;
-    
-    if (typeof statePath == "string") {
-        statePath = statePath.split(/[\.\[\]]/g);
-    }
-    
-    if (typeof options == "function") {
-        callback = options;
-        options  = false;
-    }
+	let statePath = _statePath,
+		options   = _options,
+		callback  = _callback;
+	
+	if (typeof statePath == 'string') {
+		statePath = statePath.split(/[\.\[\]]/g);
+	}
+	
+	if (typeof options == 'function') {
+		callback = options;
+		options  = false;
+	}
 
-    return {
-        value:         getValueFromState(  this, statePath, options),
-        requestChange: requestChange.bind( this, statePath, options, callback)
-    };
+	return {
+		value:         getValueFromState(  this, statePath, options ),
+		requestChange: requestChange.bind( this, statePath, options, callback )
+	};
 }
 
+/**
+ * Link input value to state.
+ * 
+ * @param  {String}   statePath
+ * @param  {Object}   options
+ * @param  {Function} callback
+ * @return {Object}
+ */
 export function valueLinkToState(_statePath, _options, _callback) {
 
-    var statePath = _statePath,
-        options   = _options,
-        callback  = _callback;
-    
-    if (typeof statePath == "string") {
-        statePath = statePath.split(/[\.\[\]]/g);
-    }
-    
-    if (typeof options == "function") {
-        callback = options;
-        options  = false;
-    }
+	let statePath = _statePath,
+		options   = _options,
+		callback  = _callback;
+	
+	if (typeof statePath == 'string') {
+		statePath = statePath.split(/[\.\[\]]/g);
+	}
+	
+	if (typeof options == 'function') {
+		callback = options;
+		options  = false;
+	}
 
-    return {
-        value:         getValueFromState(  this, statePath, options),
-        requestChange: requestChange.bind( this, statePath, options, callback),
-        onChange:      onChange.bind(      this, statePath, options, callback)
-    };
+	return {
+		value:         getValueFromState(  this, statePath, options ),
+		requestChange: requestChange.bind( this, statePath, options, callback ),
+		onChange:      onChange.bind(      this, statePath, options, callback )
+	};
 }
 
+/**
+ * Link checkbox value to state.
+ * 
+ * @param  {String}   statePath
+ * @param  {Object}   options
+ * @param  {Function} callback
+ * @return {Object}
+ */
 export function checkedLinkToState(_statePath, _options, _callback) {
 
-    var statePath = _statePath,
-        options   = _options,
-        callback  = _callback;
-    
-    if (typeof statePath == "string") {
-        statePath = statePath.split(/[\.\[\]]/g);
-    }
-    
-    if (typeof options == "function") {
-        callback = options;
-        options  = false;
-    }
+	let statePath = _statePath,
+		options   = _options,
+		callback  = _callback;
+	
+	if (typeof statePath == 'string') {
+		statePath = statePath.split(/[\.\[\]]/g);
+	}
+	
+	if (typeof options == 'function') {
+		callback = options;
+		options  = false;
+	}
 
-    return {
-        checked:       getValueFromState(  this, statePath, options),
-        requestChange: requestChange.bind( this, statePath, options, callback),
-        onChange:      onChange.bind(      this, statePath, options, callback)
-    };
+	return {
+		checked:       getValueFromState(  this, statePath, options ),
+		requestChange: requestChange.bind( this, statePath, options, callback ),
+		onChange:      onChange.bind(      this, statePath, options, callback )
+	};
 }
 
 /**
@@ -74,17 +100,24 @@ export function checkedLinkToState(_statePath, _options, _callback) {
  * @param  {Function} callback
  * @param  {Object}   new value
  */
-function requestChange(statePath, options, callback, value) {
+function requestChange(statePath, _options, callback, value) {
 
-    var newState         = setValueToState(this, statePath, options, value),
-        callbackIsSetted = typeof callback == "function";
+	const options = defaults({}, _options, this.constructor.deepLinkeConfig, {
+			storeEmptyStringAsNull: false
+		}),
+		newState = setValueToState(this, statePath, options, value),
+		{ mutator } = options;
 
-    this.setState(newState, () => {
-        
-        if (callbackIsSetted) {
-            callback.call(this, value);
-        }
-    });
+	if (typeof mutator == 'function') {
+		value = mutator(value);
+	}
+
+	this.setState(newState, () => {
+		
+		if (typeof callback == 'function') {
+			callback.call(this, value);
+		}
+	});
 }
 
 /**
@@ -95,23 +128,30 @@ function requestChange(statePath, options, callback, value) {
  * @param  {Function} callback
  * @param  {Object}   DOM onChange event object
  */
-function onChange(statePath, options, callback, event) {
+function onChange(statePath, _options, callback, event) {
 
-    var { type, value, checked } = event.target;
+	let { type, value, checked } = event.target;
 
-    if (type == "checkbox" || type == "radio") {
-        value = checked;
-    }
+	if (type == 'checkbox' || type == 'radio') {
+		value = checked;
+	}
 
-    var newState         = setValueToState(this, statePath, options, value),
-        callbackIsSetted = typeof callback == "function";
+	const options = defaults({}, _options, this.constructor.deepLinkeConfig, {
+			storeEmptyStringAsNull: false
+		}),
+		newState = setValueToState(this, statePath, options, value),
+		{ mutator } = options;
 
-    this.setState(newState, () => {
-        
-        if (callbackIsSetted) {
-            callback.call(this, value);
-        }
-    });
+	if (typeof mutator == 'function') {
+		value = mutator(value);
+	}
+
+	this.setState(newState, () => {
+		
+		if (typeof callback == 'function') {
+			callback.call(this, value);
+		}
+	});
 }
 
 /**
@@ -124,34 +164,35 @@ function onChange(statePath, options, callback, event) {
  */
 function getValueFromState(context, statePath, _options) {
 
-    var value   = context.state,
-        options = _.defaults({}, _options, context.constructor.deepLinkeConfig, {
-            storeEmptyStringAsNull: false
-        });
-    
-    var havePath = _.all(statePath, (statePathPart) => {
+	let value = context.state;
 
-        if (!_.isObject(value) || !value.hasOwnProperty(statePathPart)) {
-            return false;
-        }
-        
-        value = value[statePathPart];
-        
-        return true;
-    });
-    
-    if (!havePath) {
-        value = null;
-    }
-    
-    if (options.storeEmptyStringAsNull) {
+	const options = defaults({}, _options, context.constructor.deepLinkeConfig, {
+		storeEmptyStringAsNull: false
+	});
+	
+	const havePath = every(statePath, (statePathPart) => {
 
-        if (value === null) {
-            value = '';
-        }
-    }
-    
-    return value;
+		if (!isObject(value) || !value.hasOwnProperty(statePathPart)) {
+			return false;
+		}
+		
+		value = value[statePathPart];
+		
+		return true;
+	});
+	
+	if (!havePath) {
+		value = null;
+	}
+	
+	if (options.storeEmptyStringAsNull) {
+
+		if (value === null) {
+			value = '';
+		}
+	}
+	
+	return value;
 }
 
 /**
@@ -163,31 +204,28 @@ function getValueFromState(context, statePath, _options) {
  * @param  {Object} new value
  * @return {Object}
  */
-function setValueToState(context, statePath, _options, value) {
+function setValueToState(context, statePath, options, value) {
+	
+	if (options.storeEmptyStringAsNull) {
 
-    var options = _.defaults({}, _options, context.constructor.deepLinkeConfig, {
-        storeEmptyStringAsNull: false
-    });
-    
-    if (options.storeEmptyStringAsNull) {
+		if (value === '') {
+			value = null;
+		}
+	}
 
-        if (value === '') {
-            value = null;
-        }
-    }
+	const updaterObject = {},
+		statePathLastIndex = statePath.length - 1;
 
-    var updaterObject = {},
-        updaterLastOp = updaterObject,
-        statePathLastIndex = statePath.length - 1;
+	let updaterLastOp = updaterObject;
 
-    statePath.forEach((part, i) => {
+	statePath.forEach((part, i) => {
 
-        updaterLastOp = updaterLastOp[part] = {};
+		updaterLastOp = updaterLastOp[part] = {};
 
-        if (i == statePathLastIndex) {
-            updaterLastOp.$set = value;
-        }
-    });
-    
-    return update(context.state, updaterObject);
+		if (i == statePathLastIndex) {
+			updaterLastOp.$set = value;
+		}
+	});
+	
+	return update(context.state, updaterObject);
 }
