@@ -11,7 +11,7 @@ This mixin is a substitute for the standard React mixin React.addons.LinkedState
 
 To install from npm, run:
 
-```npm install --save react-deep-link```
+`npm install --save react-deep-link`
 
 Then include the mixin in the component that will use it:
 
@@ -42,7 +42,7 @@ class MyComponent extends React.Component {
 
 # Usage Examples #
 
-Link a text field to ```this.state.data.user.name```:
+Link a text field to `this.state.data.user.name`:
 ```jsx
 <input type="text" valueLink={this.linkState('data.user.name')} />
 ```
@@ -53,7 +53,7 @@ In React v15 `valueLink` is deprecated "due to very low popularity", because of 
 <input type="checkbox" {...this.checkedLinkToState('data.user.onDiet')} />
 ```
 
-Link a text field to ```this.state.data.user.name```, translating an empty string in the text field to null in the state and vice-versa:
+Link a text field to `this.state.data.user.name`, translating an empty string in the text field to null in the state and vice-versa:
 ```jsx
 <input type="text" valueLink={this.linkState('data.user.name', {storeEmptyStringAsNull: true})} />
 ```
@@ -62,6 +62,11 @@ In both cases above you can add callback:
 ```jsx
 <input type="text" valueLink={this.linkState('data.user.name', (newVale) => {...})} />
 <input type="text" valueLink={this.linkState('data.user.name', {storeEmptyStringAsNull: true}, (newVale) => {...})} />
+```
+
+In options you can set `mutator` function:
+```jsx
+<input type="text" {...this.valueLinkToState('data.user.name', {mutator: _ => _.toUpperCase()})} />
 ```
 
 Also you can define global configs:
