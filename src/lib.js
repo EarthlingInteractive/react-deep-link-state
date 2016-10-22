@@ -105,12 +105,13 @@ function requestChange(statePath, _options, callback, value) {
 	const options = defaults({}, _options, this.constructor.deepLinkeConfig, {
 			storeEmptyStringAsNull: false
 		}),
-		newState = setValueToState(this, statePath, options, value),
 		{ mutator } = options;
 
 	if (typeof mutator == 'function') {
 		value = mutator(value);
 	}
+
+	const newState = setValueToState(this, statePath, options, value);
 
 	this.setState(newState, () => {
 		
@@ -139,12 +140,13 @@ function onChange(statePath, _options, callback, event) {
 	const options = defaults({}, _options, this.constructor.deepLinkeConfig, {
 			storeEmptyStringAsNull: false
 		}),
-		newState = setValueToState(this, statePath, options, value),
 		{ mutator } = options;
 
 	if (typeof mutator == 'function') {
 		value = mutator(value);
 	}
+
+	const newState = setValueToState(this, statePath, options, value);
 
 	this.setState(newState, () => {
 		
